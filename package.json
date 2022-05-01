@@ -1,0 +1,24 @@
+{
+  "name": "realocation-for-guilds-mir4",
+  "version": "1.0.0",
+  "type": "esm",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "install:ci": "yarn install --fronzen-lock",
+    "start": "nodemon -L",
+    "test": "nodemon -L --config ./nodemon.test.json"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.29",
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.7.0",
+    "tsconfig-paths": "^3.14.1",
+    "typescript": "^4.6.3"
+  },
+  "dependencies": {
+    "@types/chalk": "^2.2.0",
+    "chalk": "4.1.2",
+    "dotenv": "^16.0.0"
+  }
+}

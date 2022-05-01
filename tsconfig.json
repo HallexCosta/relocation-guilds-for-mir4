@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "moduleResolution": "node",
+    "strictPropertyInitialization": false,
+    "target": "es2020",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@tests/utils/*": ["./__tests__/utils/*.ts"],
+      "@domains/*": ["./src/domains/*.domain.ts"],
+      "@classes/*": ["./src/classes/*.class.ts"],
+      "@common/*": ["./src/common/*.ts"]
+    }
+  },
+  "include": ["src/**/*", "__tests__/*"],
+  "exclude": ["node_modules/**/*"]
+}
