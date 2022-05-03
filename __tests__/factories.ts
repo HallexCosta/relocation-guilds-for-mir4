@@ -16,17 +16,18 @@ export default {
     clan: Clan,
     suffix: string,
     startIndex: number = 0,
-    amount: number
+    amount: number = 0
   ): void {
     const players = []
 
-    for (let index = startIndex; index <= amount; index++)
+    for (let index = startIndex; index <= amount; index++) {
       players.push(new Player({
         name: `${suffix}${index}`,
         power: 0,
         level: 0,
-        classe: Util.randomClass()
+        class: Util.randomInstanceClass()
       }))
+    }
 
     clan.add(...players)
   },
@@ -34,7 +35,7 @@ export default {
     guild: Guild,
     suffix: string,
     startIndex: number = 0,
-    amount: number,
+    amount: number = 1,
     ...iterators: FactoryIterator[]) {
     const clans = []
 
@@ -49,6 +50,7 @@ export default {
           .factory(
             clan,
             `${iterator.suffix} ${index}`,
+            iterator.startIndex,
             iterator.amount
           )
       )
