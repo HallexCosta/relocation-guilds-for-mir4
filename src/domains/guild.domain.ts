@@ -26,7 +26,7 @@ export default class Guild implements GuildMethods {
       .find(({ name }) => name === clanName)
 
     if (!clan)
-      throw new Error('Clan not found')
+      throw new Error(`Clan "${clanName}" not found`)
 
     return clan
   }
@@ -79,7 +79,7 @@ export default class Guild implements GuildMethods {
 
     this.clearPlayersFromClans()
 
-    for (let clanIndex = 0; clanIndex <= totalClans; clanIndex++) { 
+    for (let clanIndex = 0; clanIndex < totalClans; clanIndex++) { 
       const relocatedPlayers = players.splice(
         0,
         50
