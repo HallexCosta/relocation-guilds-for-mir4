@@ -10,7 +10,7 @@
     "strict": true,
     "skipLibCheck": true,
     "paths": {
-      "@tests/utils/*": ["./__tests__/utils/*.ts"],
+      "@tests/*": ["./__tests__/*.ts"],
       "@domains/*": ["./src/domains/*.domain.ts"],
       "@classes/*": ["./src/classes/*.class.ts"],
       "@common/*": ["./src/common/*.ts"]

@@ -1,8 +1,8 @@
-import chalk from 'chalk'
 import assert from 'assert/strict'
+
 import factories from './factories'
 
-import Util from '@common/util'
+import Util from '@tests/util'
 
 import Taoist from '@classes/taoist'
 import Arbalist from '@classes/arbalist'
@@ -11,109 +11,94 @@ import Player from '@domains/player'
 import Clan from '@domains/clan'
 import Guild from '@domains/guild'
 
-function matchObject(obj1: any, obj2: any): boolean {
-  const valuesMatching: boolean[] = []
-
-  for (const key in obj1) {
-    valuesMatching.push(key in obj2)
-    valuesMatching.push(obj1[key] === obj2[key])
-  }
-
-  const isFail = valuesMatching.find(v => v === false)
-  const isMatched = isFail === false ? false : true
-
-  return isMatched
-}
-
 // must be added the player in order of highest power
 {
-  const vContinuous = new Player({
+  const player1 = new Player({
     name: 'vContinuous',
     power: 117031,
     level: 82,
-    classe: new Taoist()
+    class: new Taoist()
   })
-  const LuL4 = new Player({
+  const player2 = new Player({
     name: 'Lu L4',
     power: 131025,
     level: 90,
-    classe: new Arbalist()
+    class: new Arbalist()
   })
-  const Arriety = new Player({
+  const player3 = new Player({
     name: 'Arriety ツ',
     power: 42000,
     level: 48,
-    classe: new Arbalist()
+    class: new Arbalist()
   })
 
-  const forwin = new Clan({
+  const clan = new Clan({
     name: 'ForWin'
   })
 
-  forwin.add(Arriety)
-  forwin.add(LuL4)
-  forwin.add(vContinuous)
+  clan.add(player3)
+  clan.add(player2)
+  clan.add(player1)
 
   function findPlayer(name: string) {
     return (player: Player) => {
       return player.name === name 
     }
   }
-  const firstPlayer = forwin.getPlayers()
+  const firstPlayer = clan.getPlayers()
     .find(findPlayer('Lu L4'))
 
   assert.deepEqual(
-    matchObject(firstPlayer, LuL4),
+    Util.matchObject(firstPlayer, player2),
     true
   )
 }
 
-// must be throw error if try add more 50 players to a guild
+// must be throw error if try add more 50 players to a clan
 {
   // no-spread
   {
-    const forwin = new Clan({
+    const clan = new Clan({
       name: 'ForWin 1'
     })
 
     assert.throws(() =>{
       for (let index = 1; index <= 51; index++)
-        forwin.add({
+        clan.add({
           name: `Player ${index}`,
           power: 0,
           level: 0,
-          classe: Util.randomClass()
+          class: Util.randomInstanceClass()
         })
     })
   }
   // with spread
   {
-    const forwin = new Clan({
+    const clan = new Clan({
       name: 'ForWin 1'
     })
 
     assert.throws(() =>{
-      const clans = []
+      const players = []
       for (let index = 1; index <= 80; index++)
-        clans.push({
+        players.push(new Player({
           name: `Player ${index}`,
           power: 0,
           level: 0,
-          classe: Util.randomClass()
-        })
+          class: Util.randomInstanceClass()
+        }))
 
-      forwin.add(...clans)
+      clan.add(...players)
     })
-
   }
 }
 
 // must be get all players from clans
 {
-  const SCOPE_MESSAGE = 'must be get all players from clans'
   const guild = new Guild()
-  const startIndexClans = 0
-  factories.clans(guild, 'ForWin', startIndexClans, 2, {
+  const startIndexClans = 1
+  const amountAddClans = 2
+  factories.clans(guild, 'ForWin', startIndexClans, amountAddClans, {
     factory: factories.players,
     startIndex: 1,
     amount: 2,
@@ -122,52 +107,53 @@ function matchObject(obj1: any, obj2: any): boolean {
 
   const players = guild.getAllPlayersFromClans()
 
-  try {
-    assert.deepEqual(players.length, 6)
-    chalk.green(SCOPE_MESSAGE) 
-  } catch(e: any) {
-    chalk.red(SCOPE_MESSAGE, e.message) 
-  }
+  assert.equal(players.length, 4)
 }
 
-// must be realocaion players of clans
+// must be relocation players of clans
 {
   const guild = new Guild()
 
-  factories.clans(guild, 'ForWin', 0, 10, {
+  const startIndexClans = 0
+  const amountAddClans = 10
+  factories.clans(guild, 'ForWin', startIndexClans, amountAddClans, {
     factory: factories.players,
     suffix: 'Test',
     startIndex: 1,
     amount: 50
   })
 
-  const vContinuous = new Player({
+  const player1 = new Player({
     name: 'vContinuous',
     power: 117031,
     level: 82,
-    classe: new Taoist()
+    class: new Taoist()
   })
-  const LuL4 = new Player({
+  const player2 = new Player({
     name: 'Lu L4',
     power: 131025,
     level: 90,
-    classe: new Arbalist()
+    class: new Arbalist()
   })
-  const VioletEvergarden = new Player({
+  const player3 = new Player({
     name: 'Violet Evergarden',
     power: 1,
     level: 199,
-    classe: new Taoist()
+    class: new Taoist()
   })
 
   const clans = guild.getClans()
   const players = clans[clans.length - 1].getPlayers()
+
+  // remove last players from structure
   players.pop()
   players.pop()
   players.pop()
-  players.splice(players.length, 0, vContinuous)
-  players.splice(players.length, 0, LuL4)
-  players.splice(players.length, 0, VioletEvergarden)
+
+  // push players in last position from array
+  players.splice(players.length, 0, player1)
+  players.splice(players.length, 0, player2)
+  players.splice(players.length, 0, player3)
 
   // priority power
   guild.relocation()
@@ -185,11 +171,11 @@ function matchObject(obj1: any, obj2: any): boolean {
     name: 'ForWin 0'
   })
 
-  const PLAYERS_AMOUNT = 50 
+  const amountPlayers = 50 
   const startIndexPlayers = 1
-  factories.players(clan, 'Test', startIndexPlayers, PLAYERS_AMOUNT)
+  factories.players(clan, 'Test', startIndexPlayers, amountPlayers)
 
-  assert.equal(clan.getPlayers().length, PLAYERS_AMOUNT)
+  assert.equal(clan.getPlayers().length, amountPlayers)
 
   clan.removePlayerByIndex(1)
   assert.equal(clan.getPlayers().length, 49)
