@@ -7,6 +7,7 @@ import Lancer from '@classes/lancer'
 import Sorcer from '@classes/sorcer'
 
 import Guild from '@domains/guild'
+import BaseClass from '@classes/base'
 
 export default class Util {
   static readonly classes = [
@@ -25,7 +26,7 @@ export default class Util {
 
       for (const playerIndex in players) {
         const player = players[playerIndex]
-        console.log(`Player ${player.name} level ${player.level} power ${player.power} classe ${player.classe}`)
+        console.log(`Player ${player.name} level ${player.level} power ${player.power} class ${player.class.constructor.name}`)
       }
 
       console.log(`Total players: ${players.length}\n`)
@@ -40,12 +41,12 @@ export default class Util {
     return randomUUID()
   }
 
-  static randomClass() {
+  static randomInstanceClass(): BaseClass {
     const classIndex = Util.randomNumber(
       0,
       Util.classes.length - 1
     )
-    const classInstance = new Util.classes[classIndex]
-    return classInstance
+    const instanceClass = new (Util.classes[classIndex])
+    return instanceClass
   }
 }

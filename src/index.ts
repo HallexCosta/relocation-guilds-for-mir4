@@ -25,26 +25,26 @@ Array.from(
         name: Util.randomUUID(),
         level: Util.randomNumber(10, 80),
         power: Util.randomNumber(0, 100000),
-        classe: Util.randomClass()
+        class: Util.randomInstanceClass()
       })
     )
   )
 )
+console.log(guild.getClan('ForWin 0').getPlayers())
 
 console.log(chalk.yellow('BEFORE RELOCATION'))
-//printPlayersFromClans(guild)
+Util.printPlayersFromClans(guild)
 
 // get clan and players
 const clan = guild.getClan('ForWin 0')
-//console.log('clan founded', clan)
 
 // remove two players
 clan.removePlayerByIndex(0)
 clan.removePlayerByIndex(1)
 
 // relocation players
-//guild.relocation()
+guild.relocation()
 
 console.log(chalk.blue('AFTER RELOCATION'))
-//printPlayersFromClans(guild)
+Util.printPlayersFromClans(guild)
 console.log('> done')
