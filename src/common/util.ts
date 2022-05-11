@@ -49,4 +49,8 @@ export default class Util {
     const instanceClass = new (Util.classes[classIndex])
     return instanceClass
   }
+
+  static clearAnArray(array: any[]) {
+    for (const _ of array) array.pop()
+  }
 }
