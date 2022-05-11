@@ -11,8 +11,12 @@ import Player from '@domains/player'
 import Clan from '@domains/clan'
 import Guild from '@domains/guild'
 
+import {it} from '../test-runner/runner'
+
 // must be added the player in order of highest power
-{
+
+it('must be added', () => {
+  assert.deepEqual(12, 1)
   const player1 = new Player({
     name: 'vContinuous',
     power: 117031,
@@ -52,49 +56,45 @@ import Guild from '@domains/guild'
     Util.matchObject(firstPlayer, player2),
     true
   )
-}
+})
 
-// must be throw error if try add more 50 players to a clan
-{
-  // no-spread
-  {
-    const clan = new Clan({
-      name: 'ForWin 1'
-    })
+ 
+it('must be throw error if try add more 50 players to a clan (no-spread)', () => {
+  const clan = new Clan({
+    name: 'ForWin 1'
+  })
 
-    assert.throws(() =>{
-      for (let index = 1; index <= 51; index++)
-        clan.add({
-          name: `Player ${index}`,
-          power: 0,
-          level: 0,
-          class: Util.randomInstanceClass()
-        })
-    })
-  }
-  // with spread
-  {
-    const clan = new Clan({
-      name: 'ForWin 1'
-    })
+  assert.throws(() =>{
+    for (let index = 1; index <= 51; index++)
+      clan.add({
+        name: `Player ${index}`,
+        power: 0,
+        level: 0,
+        class: Util.randomInstanceClass()
+      })
+  })
+})
+  
+it('must be throw error if try add more 50 players to a clan (with spread)', () => {
+  const clan = new Clan({
+    name: 'ForWin 1'
+  })
 
-    assert.throws(() =>{
-      const players = []
-      for (let index = 1; index <= 80; index++)
-        players.push(new Player({
-          name: `Player ${index}`,
-          power: 0,
-          level: 0,
-          class: Util.randomInstanceClass()
-        }))
+  assert.throws(() =>{
+    const players = []
+    for (let index = 1; index <= 80; index++)
+      players.push(new Player({
+        name: `Player ${index}`,
+        power: 0,
+        level: 0,
+        class: Util.randomInstanceClass()
+      }))
 
-      clan.add(...players)
-    })
-  }
-}
+    clan.add(...players)
+  })
+}) 
 
-// must be get all players from clans
-{
+it('must be get all players from clans', () => {
   const guild = new Guild()
   const startIndexClans = 1
   const amountAddClans = 2
@@ -108,10 +108,9 @@ import Guild from '@domains/guild'
   const players = guild.getAllPlayersFromClans()
 
   assert.equal(players.length, 4)
-}
+})
 
-// must be relocation players of clans
-{
+it('must be relocation players of clans', () => {
   const guild = new Guild()
 
   const startIndexClans = 0
@@ -163,10 +162,10 @@ import Guild from '@domains/guild'
 
   assert.equal(firstPlayer?.name, 'Lu L4')
   assert.equal(secondPlayer?.name, 'vContinuous')
-}
+})
 
-// remove player from clan by index
-{
+
+it('remove player from clan by index', () => {
   const clan = new Clan({
     name: 'ForWin 0'
   })
@@ -179,4 +178,5 @@ import Guild from '@domains/guild'
 
   clan.removePlayerByIndex(1)
   assert.equal(clan.getPlayers().length, 49)
-}
+})
+
