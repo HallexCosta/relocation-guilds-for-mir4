@@ -16,6 +16,6 @@
       "@common/*": ["./src/common/*.ts"]
     }
   },
-  "include": ["src/**/*", "__tests__/*"],
+  "include": ["src/**/*", "__tests__/*", "test-runner/*"],
   "exclude": ["node_modules/**/*"]
 }
