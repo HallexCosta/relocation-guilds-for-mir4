@@ -5,6 +5,8 @@ import Util from '@common/util'
 import Player from '@domains/player'
 import Clan from '@domains/clan'
 import Guild from '@domains/guild'
+import Taoist from '@classes/taoist'
+import Arbalist from '@classes/arbalist'
 
 const guild = new Guild()
 
@@ -30,17 +32,30 @@ Array.from(
     )
   )
 )
-console.log(guild.getClan('ForWin 0').getPlayers())
+
+// get clan and players
+const lastClan = guild.getClan('ForWin 9')
+
+// remove two players
+lastClan.removePlayerByIndex(0)
+lastClan.removePlayerByIndex(1)
+
+// add two players
+lastClan.add(new Player({
+  name: 'vContinuous',
+  class: new Taoist(),
+  level: 83,
+  power: 119557
+}))
+lastClan.add(new Player({
+  name: 'Lu L4',
+  class: new Arbalist(),
+  level: 91,
+  power: 131557
+}))
 
 console.log(chalk.yellow('BEFORE RELOCATION'))
 Util.printPlayersFromClans(guild)
-
-// get clan and players
-const clan = guild.getClan('ForWin 0')
-
-// remove two players
-clan.removePlayerByIndex(0)
-clan.removePlayerByIndex(1)
 
 // relocation players
 guild.relocation()
